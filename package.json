@@ -1,0 +1,22 @@
+{
+  "name": "obsidian-reference-text",
+  "version": "0.1.0",
+  "description": "Obsedian plugin to reference and markup text",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "Obsedian",
+    "rql",
+    "bible",
+    "text"
+  ],
+  "author": "Nathan Winder",
+  "license": "ISC",
+
+  "workspaces": [
+    "packages/*", 
+    "vault/plugins/*"
+  ]
+}

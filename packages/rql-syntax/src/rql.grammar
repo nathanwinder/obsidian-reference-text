@@ -1,0 +1,74 @@
+@detectDelim
+
+@top Document { (Transform | Block)* }
+
+Transform {
+    transform
+    Alias
+    dblLine*
+}
+
+Block {
+    Reference (and Reference)*
+    (and Transform { transform }+)?
+    ((Alias dblLine*) | dblLine+ | eof)
+}
+
+Reference {
+    Select { steps+ }
+    Transform { transform }*
+}
+
+transform {
+    startSelect
+    Operation { steps+ } (and Operation {steps+})*
+    endSelect
+}
+
+steps { Range | Span | Symbol | Text | Tag | Placeholder | Alias { tagAlias } }
+
+Range {
+    (value | Span) ("," (value | Span))+
+}
+
+Span {
+    value
+    "-"
+    value
+}
+
+value { Symbol | Text | Placeholder }
+
+@skip {} {
+    Alias {  "(" aliasTextOrSymbol }
+    tagAlias { "#(" aliasTextOrSymbol }
+    Tag { ("#" Text ) | ("#" Symbol)  }
+}
+
+@skip {
+    newline | spaces | ":" | "." | "/" | "\\"
+}
+
+@external tokens aliasTextOrSymbol from "./tokens" { aliasTextOrSymbol }
+
+@tokens {
+    eof { @eof }
+    spaces { $[ \t]+ }
+    newline { "\r\n" | $[\r\n] }
+    dblLine { newline newline }
+    
+    Text {
+        '"' (![\\\n"] | "\\" _)* '"'? |
+        "'" (![\\\n'] | "\\" _)* "'"?
+    }
+    Symbol { $[0-9a-zA-Z_]+ }
+    
+    Placeholder { "?" }
+
+    and { "&" }
+
+    startSelect { "[" }
+    endSelect { "]"}
+
+    @precedence { dblLine, newline }
+}

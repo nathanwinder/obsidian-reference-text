@@ -1,0 +1,440 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`invalid rql multiple even span 1`] = `
+"
+1-2-3-4
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Span
+·····Symbol<1>
+·····Symbol<2>
+····⚠<->
+····Span
+·····Symbol<3>
+·····Symbol<4>
+"
+`;
+
+exports[`invalid rql multiple odd span 1`] = `
+"
+1-2-3
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Span
+·····Symbol<1>
+·····Symbol<2>
+····⚠<->
+····Symbol<3>
+"
+`;
+
+exports[`valid rql complex range 1`] = `
+"
+1-2, 5, "Text 9", "Text 10" - "Text 13"
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Range
+·····Span
+······Symbol<1>
+······Symbol<2>
+·····Symbol<5>
+·····Text<"Text 9">
+·····Span
+······Text<"Text 10">
+······Text<"Text 13">
+"
+`;
+
+exports[`valid rql multi-line document 1`] = `
+"
+
+    [Highlight red] (hr) [Underline blue] (ub)
+    [hr & ub] (hrub)
+
+    [strike] (s)
+    Bibles Niv John (John)
+
+
+
+    John 3:16-17, 19
+    ["God" & hrub & italics]
+    ["Son"
+    & hrub
+    & itaclis]
+
+    James 1:1
+----------------------------------------------
+Document
+·Transform
+··Operation
+···Symbol<Highlight>
+···Symbol<red>
+··Alias
+···Symbol<hr)>
+·Transform
+··Operation
+···Symbol<Underline>
+···Symbol<blue>
+··Alias
+···Symbol<ub)>
+·Transform
+··Operation
+···Symbol<hr>
+··Operation
+···Symbol<ub>
+··Alias
+···Symbol<hrub)>
+·Transform
+··Operation
+···Symbol<strike>
+··Alias
+···Symbol<s)>
+·Block
+··Reference
+···Select
+····Symbol<Bibles>
+····Symbol<Niv>
+····Symbol<John>
+··Alias
+···Symbol<John)>
+·Block
+··Reference
+···Select
+····Symbol<John>
+····Symbol<3>
+····Range
+·····Span
+······Symbol<16>
+······Symbol<17>
+·····Symbol<19>
+···Transform
+····Operation
+·····Text<"God">
+····Operation
+·····Symbol<hrub>
+····Operation
+·····Symbol<italics>
+···Transform
+····Operation
+·····Text<"Son">
+····Operation
+·····Symbol<hrub>
+····Operation
+·····Symbol<itaclis>
+·Block
+··Reference
+···Select
+····Symbol<James>
+····Symbol<1>
+····Symbol<1>
+"
+`;
+
+exports[`valid rql multi-operation reference 1`] = `
+"
+John Niv 3:16 & John Esv 3:16 & John Nasb 3:16
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<John>
+····Symbol<Niv>
+····Symbol<3>
+····Symbol<16>
+··Reference
+···Select
+····Symbol<John>
+····Symbol<Esv>
+····Symbol<3>
+····Symbol<16>
+··Reference
+···Select
+····Symbol<John>
+····Symbol<Nasb>
+····Symbol<3>
+····Symbol<16>
+"
+`;
+
+exports[`valid rql multi-transform 1`] = `
+"
+[Highlight red & Underline blue] (Hr Ub)
+----------------------------------------------
+Document
+·Transform
+··Operation
+···Symbol<Highlight>
+···Symbol<red>
+··Operation
+···Symbol<Underline>
+···Symbol<blue>
+··Alias
+···⚠<>
+·Block
+··Reference
+···Select
+····Symbol<Hr>
+····Symbol<Ub>
+····⚠<)>
+"
+`;
+
+exports[`valid rql reference multi-operation multi-transform reference-transform 1`] = `
+"
+John ESV 3:16 [ "God" & H ] & John NIV 3:16 [ "God" & U ] & [ "God" & bold ]
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<John>
+····Symbol<ESV>
+····Symbol<3>
+····Symbol<16>
+···Transform
+····Operation
+·····Text<"God">
+····Operation
+·····Symbol<H>
+··Reference
+···Select
+····Symbol<John>
+····Symbol<NIV>
+····Symbol<3>
+····Symbol<16>
+···Transform
+····Operation
+·····Text<"God">
+····Operation
+·····Symbol<U>
+··Transform
+···Operation
+····Text<"God">
+···Operation
+····Symbol<bold>
+"
+`;
+
+exports[`valid rql reference operation multi-transform 1`] = `
+"
+John 3:16 ["God" & Highlight red & Underline blue]
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<John>
+····Symbol<3>
+····Symbol<16>
+···Transform
+····Operation
+·····Text<"God">
+····Operation
+·····Symbol<Highlight>
+·····Symbol<red>
+····Operation
+·····Symbol<Underline>
+·····Symbol<blue>
+"
+`;
+
+exports[`valid rql reference operation transform 1`] = `
+"
+John 3:16 ["God" & Highlight]
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<John>
+····Symbol<3>
+····Symbol<16>
+···Transform
+····Operation
+·····Text<"God">
+····Operation
+·····Symbol<Highlight>
+"
+`;
+
+exports[`valid rql simple reference 1`] = `
+"
+John 3:16
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<John>
+····Symbol<3>
+····Symbol<16>
+"
+`;
+
+exports[`valid rql simple transform 1`] = `
+"
+[Highlight red] (HR)
+----------------------------------------------
+Document
+·Transform
+··Operation
+···Symbol<Highlight>
+···Symbol<red>
+··Alias
+···⚠<>
+·Block
+··Reference
+···Select
+····Symbol<HR>
+····⚠<)>
+"
+`;
+
+exports[`valid rql single flag 1`] = `
+"
+#flag
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Tag
+·····Symbol<flag>
+"
+`;
+
+exports[`valid rql single symbol flag 1`] = `
+"
+#flag
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Tag
+·····Symbol<flag>
+"
+`;
+
+exports[`valid rql single text flag 1`] = `
+"
+#"flag"
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Tag
+·····Text<"flag">
+"
+`;
+
+exports[`valid rql source and flag 1`] = `
+"
+source #flag
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<source>
+····Tag
+·····Symbol<flag>
+"
+`;
+
+exports[`valid rql source and symbol tag 1`] = `
+"
+source #tag value
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<source>
+····Tag
+·····Symbol<tag>
+····Symbol<value>
+"
+`;
+
+exports[`valid rql source and text tag 1`] = `
+"
+source #tag "text value"
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Symbol<source>
+····Tag
+·····Symbol<tag>
+····Text<"text value">
+"
+`;
+
+exports[`valid rql symbol range 1`] = `
+"
+1, 5
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Range
+·····Symbol<1>
+·····Symbol<5>
+"
+`;
+
+exports[`valid rql symbol span 1`] = `
+"
+1-5
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Span
+·····Symbol<1>
+·····Symbol<5>
+"
+`;
+
+exports[`valid rql text range 1`] = `
+"
+"Text 1", "Text 5"
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Range
+·····Text<"Text 1">
+·····Text<"Text 5">
+"
+`;
+
+exports[`valid rql text span 1`] = `
+"
+"Text 1"-"Text 5"
+----------------------------------------------
+Document
+·Block
+··Reference
+···Select
+····Span
+·····Text<"Text 1">
+·····Text<"Text 5">
+"
+`;

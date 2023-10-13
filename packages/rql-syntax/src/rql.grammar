@@ -40,8 +40,8 @@ Span {
 value { Symbol | Text | Placeholder }
 
 @skip {} {
-    Alias {  "(" aliasTextOrSymbol }
-    tagAlias { "#(" aliasTextOrSymbol }
+    Alias {  "(" TextOrSymbol ")" }
+    tagAlias { "#(" TextOrSymbol ")" }
     Tag { ("#" Text ) | ("#" Symbol)  }
 }
 
@@ -49,7 +49,7 @@ value { Symbol | Text | Placeholder }
     newline | spaces | ":" | "." | "/" | "\\"
 }
 
-@external tokens aliasTextOrSymbol from "./tokens" { aliasTextOrSymbol }
+@external tokens aliasTextOrSymbol from "./tokens" { TextOrSymbol }
 
 @tokens {
     eof { @eof }

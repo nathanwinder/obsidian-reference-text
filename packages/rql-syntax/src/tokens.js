@@ -1,43 +1,51 @@
 import { ExternalTokenizer } from "@lezer/lr";
-import { Symbol, Text } from "./parser.terms";
+import { Symbol, Text } from "./parser.terms.js";
 
-const EOF = -1;
-const BACKSLASH = 92;
-const RIGHT_PAREN = 41;
-const CARIAGE_RETURN = '\r'.charCodeAt(0)
-const NEWLINE = '\n'.charCodeAt(0)
+const eof = -1;
+const escape = '\\'.charCodeAt(0);
+const paren = ')'.charCodeAt(0);
+const cr = '\r'.charCodeAt(0)
+const nl = '\n'.charCodeAt(0)
+const underscore = 95;
+
+function isAlpha(ch) { return ch >= 65 && ch <= 90 || ch >= 97 && ch <= 122}
+
+function isDigit(ch) { return ch >= 48 && ch <= 57 }
+
+function isSymbol(ch){ return isAlpha(ch) || isDigit(ch) || ch === underscore }
+
+function isTerminal(ch, input) { return ch === eof || ((ch === paren || ch === nl || ch === cr ) && (input.peek(-1) !== escape))}
+
+function debug(input, stack){ 
+    const stackChar = input.peek(stack.pos - input.pos);
+    return `stack:${stack.pos}<${stackChar}:${String.fromCharCode(stackChar)}> input:${input.pos}<${input.next}:${String.fromCharCode(input.next)}>` 
+}
 
 export const aliasTextOrSymbol = new ExternalTokenizer((input, stack)=> {
-    let isText = false;
-    const start = input.pos;
-    while(true){
+    console.log("Enter", debug(input, stack));
 
-        if(input.next === EOF || input.next === CARIAGE_RETURN || input.next === NEWLINE)
-            return;
+    let {next} = input;
+    let token = Symbol;
 
-        if(input.next === RIGHT_PAREN && input.peek(-1) !== BACKSLASH)
-        {
-            const end = input.pos;
-            if(isText){
-                console.log("Text", [start, end]);
-                input.acceptToken(Text, 1);
-            } else {
-                console.log("Symbol", [start, end]);
-                input.acceptToken(Symbol, 1);
-            }
-            return;
-        }
-
-        if(!isText){
-            const next = input.next;
-            const isNumber = next > 47 && next < 58;
-            const isUpperLetter = next > 64 && next < 91;
-            const isLowerLetter = next > 96 && next < 123;
-            const isUndersocre = next === 95;
-            if(!isNumber || !isUpperLetter || !isLowerLetter || !isUndersocre){
-                isText = true;
-            }
-        }
-        input.advance(1);
+    if(isTerminal(next, input))
+    {
+        console.log("Terminate", debug(input, stack));
+        return;
     }
+
+    let read = "";
+    do {
+        read += String.fromCharCode(next)
+        console.log(`Read ${String.fromCharCode(next)}`);
+        if(!isSymbol(next)){
+            console.log(`Found text from:${String.fromCharCode(next)}`);
+            token = Text;
+        }
+        next = input.advance();
+    } while(!isTerminal(next, input))
+
+    console.log( `input.acceptToken(${{ [Symbol]: "Symbol", [Text]: "Text"}[token]}, 1)<${read}>`)
+    input.acceptToken(token, 1);
+
+    console.log("Exit", debug(input, stack));
 });
